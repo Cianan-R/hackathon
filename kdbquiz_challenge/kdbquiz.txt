@@ -1,0 +1,20 @@
+Resources required: 
+
+KDB+ questions in a predefined table/dictionary 
+
+Problem Definition: 
+
+The idea behind this exercise is to have a kdb+ quiz system live on a kdb+ port such that users can connect to it. The quiz system itself will be comprised of methods that can send questions to the users on a timed basis, can handle the answers that are received back from the users by comparing them to the right answers, and functionality to keep track of each users’ score to be able to provide a scoreboard at the end. 
+
+Tasks 
+
+- Set up a process on a port that the users can connect to. 
+- Create a table that will track information of the connected users to the quiz. 
+- Send the questions from a predefined table/dictionary to the users at set time intervals. 
+- Collect the answers in a table. 
+- At the end total up the scores and send back the results to every user. 
+
+Optional extras 
+
+- Have functionality to accept multiple correct answers. 
+- Message just for the winner congratulating them. 
