@@ -1,0 +1,2 @@
+# hackathon
+hackathon kdb+ challenges
