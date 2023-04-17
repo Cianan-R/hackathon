@@ -87,6 +87,7 @@ q:{
  i:qx n:qn+til x;p:qp n;qn+:x;
  (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
+
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
  (".u.upd";`quote;q 1+rand qpt*maxn)];}
@@ -101,11 +102,37 @@ init:{
  len:floor d%113;
  feedm each `timestamp$o+asc len?d;}
 
-/- use the discovery service to find the tickerplant to publish data to
-.servers.startupdepcycles[`segmentedtickerplant;10;0W];
-h:.servers.gethandlebytype[`segmentedtickerplant;`any]
+/ set up process on port
+system"p 9000"
 
-/ init 0
-.timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
+/ tables with time
+/quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$())
+/trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$())
+
+quote:([]sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$())
+trade:([]sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$())
+
+\l u.q
+.u.init[]
+
+pubtrade:{.u.pub[`trade;t 1+rand maxn];}
+pubquote:{.u.pub[`quote;q 1+rand qpt*maxn];}
+
+/ below trying to add time column onto it
+pubtq:{
+    o:"p"$9e5*floor (.z.P-3600000)%9e5;
+    d:.z.P-o;
+    len:floor d%113;
+    times:`timestamp$o+asc len?d;
+    .u.pub[`trade;(enlist a#times), a:t 1+rand maxn];
+    .u.pub[`quote;(enlist a#times), q a:1+rand qpt*maxn];
+ }
+// create timer function to randomly publish
+// between 1 and 10 trade records, and between 1 and 5 quote records
+.z.ts:{pubtrade[1+rand 10]; pubquote[1+rand 5]}
+/.z.ts:{pubtq[1+rand 10]}
+
+\t 2000
+
 
 
