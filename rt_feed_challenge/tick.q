@@ -1,4 +1,4 @@
-/ generate data for rdb demo
+/ generate data
 
 sn:2 cut (
  `AMD;"ADVANCED MICRO DEVICES";
@@ -20,8 +20,6 @@ c:" 89ABCEGJKLNOPRTWZ" / cond
 e:"NONNONONNN" / ex
 src:`BARX`GETGO`SUN`DB
 side:`buy`sell
-
-/ init.q
 
 cnt:count s
 pi:acos -1
@@ -68,7 +66,6 @@ batch:{
  (qp raze n):rnd raze s;
  p::last each s;
  qn::0}
-/ gen feed for ticker plant
 
 len:10000
 batch len
@@ -77,12 +74,11 @@ maxn:10 / max trades per tick
 qpt:5   / avg quotes per trade
 
 / =========================================================================================
+
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
  (s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
-
-t:{if[not (qn+x)<count qx;batch len];i:qx n:qn+til x;qn+:x;(s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
 
 q:{
  if[not (qn+x)<count qx;batch len];
@@ -92,13 +88,15 @@ q:{
 / set up process on port
 system"p 9000"
 
-/ tables with time
+/ table schemas
 quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$());
 trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$());
 
-\l u.q
+/ load in .u funtions and initialise tables
+\l u.q 
 .u.init[]
 
+/ function for generating timestamps and publishing the tables
 pubtq:{
     o:"p"$9e5*floor (.z.P-3600000)%9e5;
     d:.z.P-o;
@@ -107,10 +105,13 @@ pubtq:{
     .u.pub[`trade;(enlist a#times), t a:1+rand maxn];
     .u.pub[`quote;(enlist a#times), q a:1+rand qpt*maxn];
  }
+
 // create timer function to randomly publish
 .z.ts:{pubtq[]}
 
+// every 2 seconds to publish
 \t 2000
+
 
 
 
