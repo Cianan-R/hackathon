@@ -17,5 +17,4 @@ sub:{if[x~`;:sub[;y]each t];if[not x in t;'x];del[x].z.w;add[x;y]}
 
 end:{(neg union/[w[;;0]])@\:(`.u.end;x)}
 
-/ upd:{[t;x]t insert x;if[l;l enlist (`upd;t;x);j+:1]} /`l error
 upd:{[t;x]t insert x}

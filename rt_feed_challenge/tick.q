@@ -73,7 +73,7 @@ batch:{
 len:10000
 batch len
 
-maxn:15 / max trades per tick
+maxn:10 / max trades per tick
 qpt:5   / avg quotes per trade
 
 / =========================================================================================
@@ -82,55 +82,33 @@ t:{
  i:qx n:qn+til x;qn+:x;
  (s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
 
+t:{if[not (qn+x)<count qx;batch len];i:qx n:qn+til x;qn+:x;(s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
+
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
  (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
-
-feed:{h$[rand 2;
- (".u.upd";`trade;t 1+rand maxn);
- (".u.upd";`quote;q 1+rand qpt*maxn)];}
-
-feedm:{h$[rand 2;
- (".u.upd";`trade;(enlist a#x),t a:1+rand maxn);
- (".u.upd";`quote;(enlist a#x),q a:1+rand qpt*maxn)];}
-
-init:{
- o:"p"$9e5*floor (.z.P-3600000)%9e5;
- d:.z.P-o;
- len:floor d%113;
- feedm each `timestamp$o+asc len?d;}
-
 / set up process on port
 system"p 9000"
 
 / tables with time
-/quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$())
-/trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$())
-
-quote:([]sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$())
-trade:([]sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$())
+quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$());
+trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$());
 
 \l u.q
 .u.init[]
 
-pubtrade:{.u.pub[`trade;t 1+rand maxn];}
-pubquote:{.u.pub[`quote;q 1+rand qpt*maxn];}
-
-/ below trying to add time column onto it
 pubtq:{
     o:"p"$9e5*floor (.z.P-3600000)%9e5;
     d:.z.P-o;
     len:floor d%113;
     times:`timestamp$o+asc len?d;
-    .u.pub[`trade;(enlist a#times), a:t 1+rand maxn];
+    .u.pub[`trade;(enlist a#times), t a:1+rand maxn];
     .u.pub[`quote;(enlist a#times), q a:1+rand qpt*maxn];
  }
 // create timer function to randomly publish
-// between 1 and 10 trade records, and between 1 and 5 quote records
-.z.ts:{pubtrade[1+rand 10]; pubquote[1+rand 5]}
-/.z.ts:{pubtq[1+rand 10]}
+.z.ts:{pubtq[]}
 
 \t 2000
 
