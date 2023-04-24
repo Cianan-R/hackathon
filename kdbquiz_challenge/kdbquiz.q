@@ -11,7 +11,7 @@ results:([handle:`int$()] username:`$(); score:`int$())                         
  `.quiz.registry upsert (x;.z.u;.z.p;.z.a); 
  `.quiz.results upsert (x;.z.u;0i); 
  `.quiz.curr_ans_tab upsert (x;.z.u;"000"); 
- x".z.pi:{(neg h)x}";
+ (neg .z.w)".z.pi:{(neg h)x}";
  }
 
 / questions and answers
@@ -66,4 +66,5 @@ cont:{
 \d .
 / call start[10] for 10 seconds for each question
 start:{system"t ",string x*1000}
+start60:start[60]
                                          
