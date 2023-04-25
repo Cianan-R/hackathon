@@ -1,5 +1,5 @@
 \l u.q
-/ table schemas
+// table schemas
 quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`char$(); src:`symbol$());
 trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`char$();side:`symbol$());
 
@@ -14,12 +14,14 @@ h:@[hopen;`::4368;{-2"Failed to open connection to publisher on port 9000: ",
                      exit 1}]
 
 // subscribe to the required data
-// .u.sub[tablename; list of instruments]
 // ` is wildcard for all
 h(`.u.sub;`;`);
 
+// first function to calculate the VWAP per min by sym
 f1:{[]`vwap set vwap:select vwap:size wavg price by sym,1 xbar time.minute from trade};
 
+// second function to calculate the positions and cost by sym
 f2:{[]`position set tab:update cost:sums price*size*?[side=`buy;-1;1], position:sums size*?[side=`buy;1;-1] by sym from trade};
 
+// third function to find any outliers by sym and exchange
 f3:{[]`outliers set tab:select outliers: count i by sym,ex from trade where abs[price-(avg;price) fby ([]sym;ex)] > 2*(dev;price) fby ([]sym;ex)}
