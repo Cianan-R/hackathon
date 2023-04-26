@@ -25,5 +25,7 @@ tradereport:select date,sym,description,curr,ntrades,size,turnoverUSD:`long$turn
 -1 (string .z.p),": Writing to csv...";
 save `:tradereport/tradereport.csv;
 (`$":tradereport/tradereport_",(("_" sv string dates) except "."),".csv") 0: "," 0:tradereport;
--1 (string .z.p),":Report complete. Exiting...";
+-1 (string .z.p),": Emailing report";
+system" mail -s '{REPORT}' {cianan.richman@aquaq.co.uk} <./tradereport/tradereport.csv"
+-1 (string .z.p),": Report complete. Exiting...";
 exit 0
