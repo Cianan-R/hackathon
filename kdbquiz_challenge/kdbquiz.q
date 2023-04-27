@@ -15,10 +15,7 @@ results:([handle:`int$()] username:`$(); score:`int$())                         
  }
 
 / questions and answers
-questions:("Q1";"Q2";"Q3");
-answers:("A1";"A2";"A3");
-d:questions!answers;
-
+\l qna.q
 
 / runs when the quiz is over
 quizover:{
