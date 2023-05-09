@@ -1,8 +1,9 @@
+/\d .test
 /define dates from command line variables
-dates:"D"$.z.x[1 2];
+dates:"D"$.z.x[0 1];
 /open port to the HDB process
 -1 (string .z.p),": Connecting to HDB...";
-h:@[hopen;25343;{-2"Failed to connect to HDB: ",x;exit 1}];
+h:@[hopen;9999;{-2"Failed to connect to HDB: ",x;exit 1}];
 /query HDB
 -1 (string .z.p),": Querying HDB...";
 trades:0!h({[DATES] select ntrades:count i, sum size,turnover:sum size*price by date,sym from trades where date within DATES};dates);
@@ -24,8 +25,10 @@ tradereport:select date,sym,description,curr,ntrades,size,turnoverUSD:`long$turn
 /save report to csv file
 -1 (string .z.p),": Writing to csv...";
 save `:tradereport/tradereport.csv;
-(`$":tradereport/tradereport_",(("_" sv string dates) except "."),".csv") 0: "," 0:tradereport;
+name:(`$":tradereport/tradereport_",(("_" sv string dates) except "."),".csv");
+name 0: "," 0:tradereport;
 -1 (string .z.p),": Emailing report";
-system"mail -s '{REPORT}' {cianan.richman@dataintellect.com} <./tradereport/tradereport.csv"
+filepath: 1_string name;
+system "mail -s 'Trade Report' -A ",filepath," emma.goodwin@dataintellect.com < /dev/null"
 -1 (string .z.p),": Report complete. Exiting...";
-exit 0
+exit 0;
