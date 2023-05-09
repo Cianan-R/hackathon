@@ -1,9 +1,14 @@
-/\d .test
 /define dates from command line variables
-dates:"D"$.z.x[0 1];
-/open port to the HDB process
--1 (string .z.p),": Connecting to HDB...";
-h:@[hopen;9999;{-2"Failed to connect to HDB: ",x;exit 1}];
+if[10=count .z.x[1] and 10=count .z.x[0]; dates:"D"$.z.x[0 1];]
+
+-1 (string .z.p),": Connecting to HDB..."; /open port to the HDB process
+h:@[hopen;9999;{-2"Failed to connect to HDB: ",x;exit 1}]
+
+if[not `dates in key `.; / if no dates provided from command line, gets first and last date
+ mindate:h"min raze flip select distinct date from trades";
+ maxdate:h"max raze flip select distinct date from trades";
+ dates:mindate,maxdate];
+
 /query HDB
 -1 (string .z.p),": Querying HDB...";
 trades:0!h({[DATES] select ntrades:count i, sum size,turnover:sum size*price by date,sym from trades where date within DATES};dates);
