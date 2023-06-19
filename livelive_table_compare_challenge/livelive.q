@@ -30,7 +30,7 @@ ohlc:{[tab1;tab2]
  t1:select open1:first price, high1:max price, low1:min price, close1:last price by sym from tab1;
  t2:select open2:first price, high2:max price, low2:min price, close2:last price by sym from tab2;
  ohlc:t1 uj t2;
- .live.ohlc:1!`sym`open1`open2`high1`high2`low1`low2`close1`close2 xcols 0!ohlc 
+ 1!`sym`open1`open2`high1`high2`low1`low2`close1`close2 xcols 0!ohlc 
  }
 
 /call the ohlc function with t1 and t2
@@ -67,3 +67,5 @@ hdbcompare:{[hdbport1;hdbport2]
  each_date[hdb1;hdb2] each dates;
  hclose hdb1; hclose hdb2;
  }
+
+hdbcompare[1578;1579]
