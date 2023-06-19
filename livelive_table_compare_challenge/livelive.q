@@ -46,6 +46,8 @@ each_date:{[hdb1;hdb2;date1] / works
  q2:hdb2({?[`quotes;enlist(=;`date;x);0b;()]};date1);
  / run functions
  .live.ohlctab:ohlc[t1;t2];
+ /summary table with % comparison
+ .live.summary:update open_diff:abs open1%open2,high_diff:abs high1%high2,low_diff:abs low1%low2, close_diff:abs close1%close2 from .live.ohlctab;
  / get spread table from query
  spread_tab:?[`.live.ohlctab;();(enlist `sym)!enlist `sym;`spread1`spread2!((-;`open1;`close1);(-;`open2;`close2))];
  / find which table has smaller spread and save this table
