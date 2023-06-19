@@ -1,6 +1,14 @@
 / LOAD CSVS
-t1:("PSSFI";enlist",")0:`:t1.csv;
-t2:("PSSFI";enlist",")0:`:t2.csv;
+
+.live.load:{[f;t]
+  path:hsym `$(f,".csv");
+  (t;enlist ",")0:path
+  };
+
+/ error trap loading in CSV
+
+t1:.[.live.load;(.z.x[0];"PSSFI");{0N!x}];
+t2:.[.live.load;(.z.x[1];"PSSFI");{0N!x}];
 
 / report on nulls
 null1:select sum_nulls_t1:sum(sum size;sum time;sum price;sum sym;sum src) from null t1;
@@ -15,15 +23,19 @@ delete from `t1 where (time=0Np)or(sym=`)or(src=`)or(price=0n)or(size=0N);
 delete from `t2 where (time=0Np)or(sym=`)or(src=`)or(price=0n)or(size=0N);                                                    
 
 / functions for creating the two comparison tables
-\d .live
+
 
 / make ohlc comparison table
 ohlc:{[tab1;tab2]
  t1:select open1:first price, high1:max price, low1:min price, close1:last price by sym from tab1;
  t2:select open2:first price, high2:max price, low2:min price, close2:last price by sym from tab2;
  ohlc:t1 uj t2;
- 1!`sym`open1`open2`high1`high2`low1`low2`close1`close2 xcols 0!ohlc 
+ .live.ohlc:1!`sym`open1`open2`high1`high2`low1`low2`close1`close2 xcols 0!ohlc 
  }
+
+/call the ohlc function with t1 and t2
+
+ohlc[t1;t2]
 
 / compare trade tables for each date and save down
 each_date:{[hdb1;hdb2;date1] / works
