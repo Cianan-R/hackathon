@@ -1,8 +1,8 @@
 /define dates from command line variables
-if[10=count .z.x[1] and 10=count .z.x[0]; dates:"D"$.z.x[0 1];]
+if[10=count .z.x[1] and 10=count .z.x[0]; dates:"D"$(.Q.opt[.z.x]`dates)[0 1];]
 
 -1 (string .z.p),": Connecting to HDB..."; /open port to the HDB process
-h:@[hopen;9999;{-2"Failed to connect to HDB: ",x;exit 1}]
+h:@[hopen;1567;{-2"Failed to connect to HDB: ",x;exit 1}]
 
 if[not `dates in key `.; / if no dates provided from command line, gets first and last date
  mindate:h"min raze flip select distinct date from trades";
@@ -36,4 +36,4 @@ name 0: "," 0:tradereport;
 filepath: 1_string name;
 system "mail -s 'Trade Report' -A ",filepath," emma.goodwin@dataintellect.com < /dev/null"
 -1 (string .z.p),": Report complete. Exiting...";
-exit 0;
+
