@@ -7,8 +7,8 @@
 
 / error trap loading in CSV
 
-t1:.[.live.load;(.z.x[0];"PSSFI");{0N!x}];
-t2:.[.live.load;(.z.x[1];"PSSFI");{0N!x}];
+t1:.[.live.load;((.Q.opt[.z.x]`tables)[0];"PSSFI");{0N!x}];
+t2:.[.live.load;((.Q.opt[.z.x]`tables)[1];"PSSFI");{0N!x}];
 
 / report on nulls
 null1:select sum_nulls_t1:sum(sum size;sum time;sum price;sum sym;sum src) from null t1;
