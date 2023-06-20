@@ -32,8 +32,10 @@ tradereport:select date,sym,description,curr,ntrades,size,turnoverUSD:`long$turn
 save `:tradereport/tradereport.csv;
 name:(`$":tradereport/tradereport_",(("_" sv string dates) except "."),".csv");
 name 0: "," 0:tradereport;
+/to save as non csv
+`:tradereport/tradereport_table set tradereport
 -1 (string .z.p),": Emailing report";
 filepath: 1_string name;
 system "mail -s 'Trade Report' -A ",filepath," emma.goodwin@dataintellect.com < /dev/null"
--1 (string .z.p),": Report complete. Exiting...";
+-1 (string .z.p),": Report complete.";
 
