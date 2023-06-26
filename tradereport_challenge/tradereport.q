@@ -36,6 +36,6 @@ name 0: "," 0:tradereport;
 `:tradereport/tradereport_table set tradereport
 -1 (string .z.p),": Emailing report";
 filepath: 1_string name;
-system "mail -s 'Trade Report' -A ",filepath," emma.goodwin@dataintellect.com < /dev/null"
+system "mail -s 'Trade Report' -A ",filepath," cianan.richman@dataintellect.com < /dev/null"
 -1 (string .z.p),": Report complete.";
 
