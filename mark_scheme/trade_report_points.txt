@@ -16,7 +16,7 @@ back if the connection fails
 • Trade report should be saved out to disk with (./traderport/tradereport.csv) as a csv file with 
 	column names (case sensitive): date,sym,description,curr,ntrades,size,turnoverUSD.
 	
-2.2.2 The optional extras ( 0 pts each bc optional)
+2.2.2 The optional extras ( 1 pt each )
 • Check the date input and if there aren’t 2 dates, query across a set, hardcoded range
 • Modify your functionality to output the report as tradereport_<start date>_<end date>.csv
 • Can you create a better looking report that doesn’t use csv?
