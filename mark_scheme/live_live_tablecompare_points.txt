@@ -1,0 +1,26 @@
+compare tables ( 1pt each )
+• 2 params passed from the command line corresponding to the 2 csv files being compared
+• load in the two csv files containing the datasets that we are comparing
+• Report on and handle the nulls
+• function that calculates the will get the open-high-low-close by sym from your input tables
+• Take your captured tables and join them together so you can compare them.
+• Order your table such that they columns from table 2 are beside corresponding columns from table 1
+
+Phase 2 ( 1 pt each )
+• Have 2 q processes that start up housing those datasets (see querying the 2 hdb processes)
+• Create a comparison process that is separate to the above that can start up, takes host and port params for each of the hdbs from the command line
+• Create functionality to get open-high-low-close via IPC from the two HDB processes
+• Compare the data as done with the CSV files above
+• Determine the “best” trade data site by finding which one has the smallest spread over open/close by sym per day.
+• Using this choice, save the “best” days trade and quote tables down into a new hdb to create a single, consistent dataset that will contain one trade and one quote table for each day. 
+Hint: namespaces can be loaded into a script using 
+
+3.2.2 The optional extras ( 2 pt each )
+• Can you add in % difference between the values?
+• Can you output a summary table?
+• In the comparison between your two tables we asked you to join the two datasets and compare the values between them. Could you write functionality that compares the rows and columns directly without joining (Hint: ~’’ tilda and two apostrophes)
+
+3.2.3 Bonus path ( 2 pt each )
+• .Q.opt
+• Logging over levels e.g info, error, fatal?
+• Error capture utilized where feasible
