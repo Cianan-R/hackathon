@@ -15,7 +15,7 @@ Phase 2 ( 1 pt each )
 • Using this choice, save the “best” days trade and quote tables down into a new hdb to create a single, consistent dataset that will contain one trade and one quote table for each day. 
 Hint: namespaces can be loaded into a script using 
 
-3.2.2 The optional extras ( 0 pt each bc optional )
+3.2.2 The optional extras ( 1 pt each )
 • Can you add in % difference between the values?
 • Can you output a summary table?
 • In the comparison between your two tables we asked you to join the two datasets and compare the values between them. Could you write functionality that compares the rows and columns directly without joining (Hint: ~’’ tilda and two apostrophes)
