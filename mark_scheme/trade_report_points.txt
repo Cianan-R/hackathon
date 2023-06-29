@@ -1,0 +1,29 @@
+trade report ( 1pt each )
+• input 2 dates; a start date and end date from command line.
+• Logging solution
+• You should have 2 q processes; one HDB and one process for reporting. (see this by the querying)
+• Querying between the reporting process and HDB should be performed over IPC
+• When your report process attempts to connect to the HDB it should have error trapping to report 
+back if the connection fails
+• The HDB will house raw historical data, queries on it should return for each date and sym:
+	o ntrade (number of trades)
+	o size (Total size traded)
+	o turnover (price*size)
+• You need to generate the turnover in USD
+	o Load in the 2 provided csv files and join their data appropriately
+	o Perform the necessary calculations.
+• Trade report table should include fx rates and any static information provided.
+• Trade report should be saved out to disk with (./traderport/tradereport.csv) as a csv file with 
+	column names (case sensitive): date,sym,description,curr,ntrades,size,turnoverUSD.
+	
+2.2.2 The optional extras ( 2 pts each )
+• Check the date input and if there aren’t 2 dates, query across a set, hardcoded range
+• Modify your functionality to output the report as tradereport_<start date>_<end date>.csv
+• Can you create a better looking report that doesn’t use csv?
+• Can you have the report emailed leveraging kdb+ commands?
+
+2.2.3 Bonus path ( 2 pts each )
+Data Intellect are also willing to offer additional kudos to challengers who:
+• .Q.opt
+• Logging over levels e.g info, error, fatal?
+• Error capture utilized where feasible
